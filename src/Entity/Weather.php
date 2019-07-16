@@ -21,6 +21,11 @@ use App\Controller\WeatherGetData;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\WeatherRepository")
+ * @ORM\Table(name="weather", indexes={
+ *      @ORM\Index(name="city_idx", columns={"city"}),
+ *      @ORM\Index(name="temperature_idx", columns={"temperature"})
+ * })
+
  */
 class Weather
 {
