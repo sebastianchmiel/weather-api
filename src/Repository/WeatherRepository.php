@@ -19,32 +19,15 @@ class WeatherRepository extends ServiceEntityRepository
         parent::__construct($registry, Weather::class);
     }
 
-    // /**
-    //  * @return Weather[] Returns an array of Weather objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('w.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+    /**
+     * save entity
+     * 
+     * @param Weather $entity
+     * 
+     * @return void
+     */
+    public function save(Weather $entity): void {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Weather
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

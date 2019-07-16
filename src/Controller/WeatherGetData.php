@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Weather;
+use App\Handler\WeatherGetDataHandler;
 
 /**
  * Get weather data
@@ -11,11 +12,29 @@ use App\Entity\Weather;
  */
 class WeatherGetData {
     
+    /**
+     * @var WeatherGetDataHandler
+     */
+    private $weatherGetDataHandler;
+    
+    /**
+     * @param WeatherGetDataHandler $weatherGetDataHandler
+     */
+    public function __construct(WeatherGetDataHandler $weatherGetDataHandler)
+    {
+        $this->weatherGetDataHandler = $weatherGetDataHandler;
+    }
+    
+    /**
+     * handle request
+     * 
+     * @param Weather $data
+     * 
+     * @return Weather
+     */
     public function __invoke(Weather $data): Weather
     {
-        //$this->weaterGetDataHandler->handle($data);
-        
-        return $data;
+        return $this->weatherGetDataHandler->handle($data);
     }
     
 }
