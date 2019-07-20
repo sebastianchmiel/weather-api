@@ -22,10 +22,4 @@ final class GetStatsRequest {
      * @var float
      */
     public $lat;
-    
-    /**
-     * @Assert\NotBlank
-     * @var float
-     */
-    public $lng;
 }

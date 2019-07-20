@@ -6,6 +6,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use App\DataProvider\Weather\WeatherDataProviderInterface;
 use App\DataProvider\Weather\Providers\Openweathermap\DataConverter;
 use App\Model\Weather\WeatherDataModel;
+use App\DataProvider\Weather\UnitRecognizerAbstract;
+use App\DataProvider\Weather\Providers\Openweathermap\UnitRecognizer;
 
 /**
  * openweathermap data provider
@@ -36,9 +38,16 @@ class OpenweathermapDataProvider implements WeatherDataProviderInterface
     private $dataConverter;
     
     /**
-     * @param ParameterBagInterface $parameterBag
+     * units
+     * @var string
      */
-    public function __construct(ParameterBagInterface $parameterBag) {
+    private $unit;
+    
+    /**
+     * @param ParameterBagInterface $parameterBag
+     * @param string $unit (default NULL)
+     */
+    public function __construct(ParameterBagInterface $parameterBag, string $unit = null) {
         if (!$parameterBag->has(self::PARAM_API_KEY_NAME)) {
             throw new \InvalidArgumentException('API OpenWeatherMap missing api key');
         }
@@ -46,6 +55,8 @@ class OpenweathermapDataProvider implements WeatherDataProviderInterface
         $this->apiKey = $parameterBag->get(self::PARAM_API_KEY_NAME);
         
         $this->dataConverter = new DataConverter();
+        
+        $this->unit = (new UnitRecognizer())->recognize($unit);
     }
 
     /**
@@ -58,7 +69,7 @@ class OpenweathermapDataProvider implements WeatherDataProviderInterface
      */
     public function getWeatherData(float $lat, float $lng): WeatherDataModel {
         // prapare host with parameters
-        $url = self::API_HOST . 'weather?lat='.$lat.'&lon='.$lng.'&appid='.$this->apiKey;
+        $url = self::API_HOST . 'weather?lat='.$lat.'&lon='.$lng.'&appid='.$this->apiKey.'&units='.$this->unit;
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);

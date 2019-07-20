@@ -24,8 +24,9 @@ class DataConverter
                 ->setCity($data['name'] ?? null)
                 ->setTemperature($data['main']['temp'] ?? null)
                 ->setClouds($data['clouds']['all'] ?? null)
-                ->setWindSpeed($data['wind']['speed'] ?? null)
-                ->setWindDeg($data['wind']['deg'] ?? null)
-                ->setDescription($data['weather'][0]['description'] ?? null);
+                ->setWindSpeed($data['wind']['speed'] ?? 0)
+                ->setWindDeg($data['wind']['deg'] ?? 0)
+                ->setDescription($data['weather'][0]['description'] ?? null)
+                ->setIcon(isset($data['weather'][0]['icon']) ? 'http://openweathermap.org/img/wn/'.$data['weather'][0]['icon'].'@2x.png' : null);
     }
 }

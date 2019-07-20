@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use App\Repository\WeatherRepository;
+use App\Model\Stats\StatsModel;
 
 final class StatsSubscriber implements EventSubscriberInterface
 {
@@ -45,22 +46,20 @@ final class StatsSubscriber implements EventSubscriberInterface
         }
         
         // prepare result 
-        $result = [];
+        $statsModel = new StatsModel();
         
         // temperature
         $temperatureStats = $this->repository->getTemperatureStats();
-        $result['temperature'] = [
-            'min' => (float)$temperatureStats['tempMin'],
-            'max' => (float)$temperatureStats['tempMax'],
-            'avg' => (float)$temperatureStats['tempAvg']
-        ];
+        $statsModel->setTemperatureMin((float)$temperatureStats['tempMin']);
+        $statsModel->setTemperatureMax((float)$temperatureStats['tempMax']);
+        $statsModel->setTemperatureAvg((float)$temperatureStats['tempAvg']);
 
         // most searched city
-        $result['mostSearchedCity'] = $this->repository->getMostSerachedCity();
+        $statsModel->setMostSearchedCity($this->repository->getMostSerachedCity());
         
         // totat searches count
-        $result['totalSearchesCount'] = $this->repository->getTotalSearchesCount();
+        $statsModel->setTotalSearchesCount($this->repository->getTotalSearchesCount());
         
-        $event->setResponse(new JsonResponse($result, 200));
+        $event->setResponse(new JsonResponse($statsModel->toArray(), 200));
     }
 }
