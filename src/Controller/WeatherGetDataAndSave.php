@@ -4,14 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Weather;
 use App\Handler\WeatherGetDataHandler;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * Get weather data
+ * Get weather data and save in history
  *
  * @author Sebastian Chmiel
  */
-class WeatherGetData {
+class WeatherGetDataAndSave {
 
     /**
      * @var WeatherGetDataHandler
@@ -21,8 +20,7 @@ class WeatherGetData {
     /**
      * @param WeatherGetDataHandler $weatherGetDataHandler
      */
-    public function __construct(WeatherGetDataHandler $weatherGetDataHandler)
-    {
+    public function __construct(WeatherGetDataHandler $weatherGetDataHandler) {
         $this->weatherGetDataHandler = $weatherGetDataHandler;
     }
 
@@ -33,10 +31,8 @@ class WeatherGetData {
      * 
      * @return Weather
      */
-    public function __invoke(Weather $data)
-    {
-        $data = $this->weatherGetDataHandler->handle($data);
-        return new JsonResponse($data->toArray());
+    public function __invoke(Weather $data): Weather {
+        return $this->weatherGetDataHandler->handle($data);
     }
 
 }

@@ -37,6 +37,11 @@ class WeatherDataModel {
      */
     private $description;
 
+    /**
+     * @var string icon
+     */
+    private $icon;
+
 
     public function getCity(): ?string
     {
@@ -106,6 +111,18 @@ class WeatherDataModel {
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+    
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): self
+    {
+        $this->icon = $icon;
 
         return $this;
     }

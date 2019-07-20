@@ -33,7 +33,13 @@ class WeatherGetDataHandler {
         $this->dataProvider = $dataProvider;
     }
     
-    
+    /**
+     * @param Weather $weather
+     * 
+     * @return Weather
+     * 
+     * @throws \Exception
+     */
     public function handle(Weather $weather): Weather
     {
         // get data
@@ -51,13 +57,8 @@ class WeatherGetDataHandler {
                 ->setWindSpeed($data->getWindSpeed())
                 ->setWindDeg($data->getWindDeg())
                 ->setDescription($data->getDescription())
+                ->setIcon($data->getIcon())
                 ;
-        
-        try {
-            $this->repository->save($weather);
-        } catch (\Exception $ex) {
-            throw new \Exception('Cannot save weather data');
-        }
         
         return $weather;
     }

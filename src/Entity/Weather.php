@@ -5,20 +5,27 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use App\Controller\WeatherGetData;
+use App\Controller\WeatherGetDataAndSave;
 
 /**
  * @ApiResource(
  *     collectionOperations={
  *          "get",
- *          "post"={
+ *          "get_data"={
  *              "method"="POST",
  *              "path"="/weathers/get-data",
  *              "controller"=WeatherGetData::class,
+ *          },
+ *          "get_data_and_save"={
+ *              "method"="POST",
+ *              "path"="/weathers/get-data-and-save",
+ *              "controller"=WeatherGetDataAndSave::class,
  *          }
  *     },
  *     itemOperations={
  *          "get"
- *     }
+ *     },
+ *     attributes={"order"={"createDatetime": "DESC"}}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\WeatherRepository")
  * @ORM\Table(name="weather", indexes={
@@ -100,6 +107,13 @@ class Weather
      * @ORM\Column(type="string", length=255)
      */
     private $description;
+    
+    /**
+     * @var string icon
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    private $icon;
 
 
     public function getId(): ?int
@@ -214,7 +228,38 @@ class Weather
 
         return $this;
     }
+    
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
 
+    public function setIcon(string $icon): self
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * convert to array
+     * @return array
+     */
+    public function toArray(): array 
+    {
+        return [
+            'createDatetime' => $this->createDatetime ? $this->createDatetime->format('c') : null,
+            'lat' => $this->lat,
+            'lng' => $this->lng,
+            'city' => $this->city,
+            'temperature' => $this->temperature,
+            'clouds' => $this->clouds,
+            'windSpeed' => $this->windSpeed,
+            'windDeg' => $this->windDeg,
+            'description' => $this->description,
+            'icon' => $this->icon,
+        ];
+    }
     
 
 }
