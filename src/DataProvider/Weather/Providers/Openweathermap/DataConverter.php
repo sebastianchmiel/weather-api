@@ -27,6 +27,6 @@ class DataConverter
                 ->setWindSpeed($data['wind']['speed'] ?? 0)
                 ->setWindDeg($data['wind']['deg'] ?? 0)
                 ->setDescription($data['weather'][0]['description'] ?? null)
-                ->setIcon(isset($data['weather'][0]['icon']) ? 'http://openweathermap.org/img/wn/'.$data['weather'][0]['icon'].'@2x.png' : null);
+                ->setIcon(isset($data['weather'][0]['icon']) ? 'https://openweathermap.org/img/wn/'.$data['weather'][0]['icon'].'@2x.png' : null);
     }
 }
